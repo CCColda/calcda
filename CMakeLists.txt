@@ -44,8 +44,8 @@ if (${CALCDA_TEST})
 	add_executable(
 		tests
 		${CALCDA_TEST_DIR}/test.cpp
-		${CALCDA_TEST_DIR}/Vector2.cpp
-		${CALCDA_TEST_DIR}/Geometry.cpp
+		${CALCDA_TEST_DIR}/Vector2.test.cpp
+		${CALCDA_TEST_DIR}/Geometry.test.cpp
 		${CALCDA_TEST_DIR}/string.hpp
 		${CALCDA_HEADER_FILES}
 		${CALCDA_CATCH_FILE}
