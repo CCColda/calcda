@@ -2,26 +2,23 @@ cmake_minimum_required(VERSION 3.0.0)
 project(calcda VERSION 1.0.0)
 
 # toggle testing to be off by default
-option(BUILD_TESTING "Build the test executable using Catch2" OFF)
-include(CTest)
-include(CPack)
-
-enable_testing()
+option(CALCDA_TEST "Build the test executable using Catch2" OFF)
 
 set(CALCDA_SRC_DIR src)
+set(CALCDA_INCLUDE_DIR include)
 set(CALCDA_TEST_DIR test)
 set(CALCDA_CATCH_FILE ${CALCDA_TEST_DIR}/catch.hpp)
 set(
 	CALCDA_HEADER_FILES
-	${CALCDA_SRC_DIR}/Calcda.hpp
-	${CALCDA_SRC_DIR}/Vector2.hpp
-	${CALCDA_SRC_DIR}/Vector3.hpp
-	${CALCDA_SRC_DIR}/Vector4.hpp
-	${CALCDA_SRC_DIR}/Matrix3.hpp
-	${CALCDA_SRC_DIR}/Matrix4.hpp
-	${CALCDA_SRC_DIR}/Intrinsic.hpp
-	${CALCDA_SRC_DIR}/Rotation.hpp
-	${CALCDA_SRC_DIR}/Geometry.hpp
+	${CALCDA_INCLUDE_DIR}/Calcda.hpp
+	${CALCDA_INCLUDE_DIR}/Vector2.hpp
+	${CALCDA_INCLUDE_DIR}/Vector3.hpp
+	${CALCDA_INCLUDE_DIR}/Vector4.hpp
+	${CALCDA_INCLUDE_DIR}/Matrix3.hpp
+	${CALCDA_INCLUDE_DIR}/Matrix4.hpp
+	${CALCDA_INCLUDE_DIR}/Intrinsic.hpp
+	${CALCDA_INCLUDE_DIR}/Rotation.hpp
+	${CALCDA_INCLUDE_DIR}/Geometry.hpp
 )
 
 add_library(
@@ -37,7 +34,13 @@ add_library(
 	${CALCDA_HEADER_FILES}
 )
 
-if (${BUILD_TESTING})
+target_include_directories(
+	calcda
+	PUBLIC
+	${CALCDA_INCLUDE_DIR}
+)
+
+if (${CALCDA_TEST})
 	add_executable(
 		tests
 		${CALCDA_TEST_DIR}/test.cpp
@@ -47,15 +50,27 @@ if (${BUILD_TESTING})
 		${CALCDA_HEADER_FILES}
 		${CALCDA_CATCH_FILE}
 	)
-	target_include_directories(tests PRIVATE ${CALCDA_SRC_DIR})
+	target_include_directories(tests PRIVATE ${CALCDA_INCLUDE_DIR})
 	target_include_directories(tests PRIVATE ${CALCDA_TEST_DIR})
 	target_link_libraries(tests calcda)
 	target_compile_features(tests PRIVATE cxx_std_17)
+	set_target_properties(
+		tests
+		PROPERTIES
+		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+		LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	)
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+set_target_properties(
+	calcda
+	PROPERTIES
+	ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
 
 target_compile_features(calcda PRIVATE cxx_std_17)
