@@ -12,7 +12,7 @@ namespace Calcda {
  * @see [Reference: Intrinsics](https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2_Intrinsics.cs)
  * @see [Reference: Vector2](https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2.cs)
  */
-class CALCDA Vector2 {
+class Vector2 {
 public:
 	float x;
 	float y;
@@ -79,25 +79,25 @@ public:
 	Vector2 &selfNegate();
 
 	//! @brief Returns the two vectors added together
-	[[nodiscard]] Vector2 add(const Vector2 &Other) const;
+	/* [[nodiscard]] */ Vector2 add(const Vector2 &Other) const;
 
 	//! @brief Returns the two vectors subtracted
-	[[nodiscard]] Vector2 subtract(const Vector2 &Other) const;
+	/* [[nodiscard]] */ Vector2 subtract(const Vector2 &Other) const;
 
 	//! @brief Returns the two vectors multiplied
-	[[nodiscard]] Vector2 multiply(const Vector2 &Other) const;
+	/* [[nodiscard]] */ Vector2 multiply(const Vector2 &Other) const;
 
 	//! @brief Returns the elements of the current vector divided by @c Amount
-	[[nodiscard]] Vector2 divide(float Amount) const;
+	/* [[nodiscard]] */ Vector2 divide(float Amount) const;
 
 	//! @brief Returns the two vectors divided
-	[[nodiscard]] Vector2 divide(const Vector2 &Other) const;
+	/* [[nodiscard]] */ Vector2 divide(const Vector2 &Other) const;
 
 	//! @brief Returns the current vector normalized
-	[[nodiscard]] Vector2 normalize() const;
+	/* [[nodiscard]] */ Vector2 normalize() const;
 
 	//! @brief Returns the vector negated
-	[[nodiscard]] Vector2 negate() const;
+	/* [[nodiscard]] */ Vector2 negate() const;
 
 	Vector2 operator+(const Vector2 &Other) const;
 	Vector2 operator-(const Vector2 &Other) const;

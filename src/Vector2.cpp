@@ -122,7 +122,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return *this;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::add(const Vector2 &Other) const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::add(const Vector2 &Other) const
 {
 	Vector2 result;
 
@@ -132,7 +132,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return result;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::subtract(const Vector2 &Other) const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::subtract(const Vector2 &Other) const
 {
 	Vector2 result;
 
@@ -142,7 +142,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return result;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::multiply(const Vector2 &Other) const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::multiply(const Vector2 &Other) const
 {
 	Vector2 result;
 
@@ -152,7 +152,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return result;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::divide(float Amount) const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::divide(float Amount) const
 {
 	Vector2 result;
 
@@ -164,7 +164,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return result;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::divide(const Vector2 &Other) const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::divide(const Vector2 &Other) const
 {
 	Vector2 result;
 
@@ -174,7 +174,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return result;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::normalize() const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::normalize() const
 {
 	Vector2 result;
 
@@ -186,7 +186,7 @@ Vector2 &CALCDA Vector2::selfNegate()
 	return result;
 }
 
-[[nodiscard]] Vector2 CALCDA Vector2::negate() const
+/* [[nodiscard]] */ Vector2 CALCDA Vector2::negate() const
 {
 	return Vector2(-x, -y);
 }

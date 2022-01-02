@@ -92,25 +92,25 @@ public:
 	Vector3 &selfNegate();
 
 	//! @brief Adds the two vectors together
-	[[nodiscard]] Vector3 add(const Vector3 &Other) const;
+	/* [[nodiscard]] */ Vector3 add(const Vector3 &Other) const;
 
 	//! @brief Subtracts @c Other from the current vector
-	[[nodiscard]] Vector3 subtract(const Vector3 &Other) const;
+	/* [[nodiscard]] */ Vector3 subtract(const Vector3 &Other) const;
 
 	//! @brief Multiplies the current vector with @c Other
-	[[nodiscard]] Vector3 multiply(const Vector3 &Other) const;
+	/* [[nodiscard]] */ Vector3 multiply(const Vector3 &Other) const;
 
 	//! @brief Divides the elements of the current vector with @c Amount
-	[[nodiscard]] Vector3 divide(float Amount) const;
+	/* [[nodiscard]] */ Vector3 divide(float Amount) const;
 
 	//! @brief Divides the current vector with @c Other, returns the result
-	[[nodiscard]] Vector3 divide(const Vector3 &Other) const;
+	/* [[nodiscard]] */ Vector3 divide(const Vector3 &Other) const;
 
 	//! @brief Normalizes the current vector
-	[[nodiscard]] Vector3 normalize() const;
+	/* [[nodiscard]] */ Vector3 normalize() const;
 
 	//! @brief Negates the vector
-	[[nodiscard]] Vector3 negate() const;
+	/* [[nodiscard]] */ Vector3 negate() const;
 
 	Vector3 operator+(const Vector3 &Other) const;
 	Vector3 operator-(const Vector3 &Other) const;

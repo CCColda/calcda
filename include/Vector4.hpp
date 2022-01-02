@@ -105,25 +105,25 @@ public:
 	Vector4 &selfNegate();
 
 	//! @brief Adds the two vectors together
-	[[nodiscard]] Vector4 add(const Vector4 &Other) const;
+	/* [[nodiscard]] */ Vector4 add(const Vector4 &Other) const;
 
 	//! @brief Subtracts @c Other from the current vector
-	[[nodiscard]] Vector4 subtract(const Vector4 &Other) const;
+	/* [[nodiscard]] */ Vector4 subtract(const Vector4 &Other) const;
 
 	//! @brief Multiplies the current vector with @c Other
-	[[nodiscard]] Vector4 multiply(const Vector4 &Other) const;
+	/* [[nodiscard]] */ Vector4 multiply(const Vector4 &Other) const;
 
 	//! @brief Divides the elements of the current vector with @c Amount
-	[[nodiscard]] Vector4 divide(float Amount) const;
+	/* [[nodiscard]] */ Vector4 divide(float Amount) const;
 
 	//! @brief Divides the current vector with @c Other, returns the result
-	[[nodiscard]] Vector4 divide(const Vector4 &Other) const;
+	/* [[nodiscard]] */ Vector4 divide(const Vector4 &Other) const;
 
 	//! @brief Normalizes the current vector
-	[[nodiscard]] Vector4 normalize() const;
+	/* [[nodiscard]] */ Vector4 normalize() const;
 
 	//! @brief Negates the vector
-	[[nodiscard]] Vector4 negate() const;
+	/* [[nodiscard]] */ Vector4 negate() const;
 
 	Vector4 operator+(const Vector4 &Other) const;
 	Vector4 operator-(const Vector4 &Other) const;
