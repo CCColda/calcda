@@ -20,8 +20,8 @@ TEST_CASE("Polygon intersections", "Polygon") {
 		);
 
 		REQUIRE_THAT(intersections, Catch::Matchers::UnorderedEquals(std::vector<Vector2>{
-			Vector2(0.75f, 0.0f),
-			Vector2(1.0f, 0.25f)
+			Vector2(1.0f, 1.0f),
+			Vector2(0.5f, 0.0f)
 		}));
 	}
 }
