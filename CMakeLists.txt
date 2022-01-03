@@ -3,10 +3,15 @@ project(calcda VERSION 1.0.0)
 
 # toggle testing to be off by default
 option(CALCDA_TEST "Build the test executable using Catch2" OFF)
+option(CALCDA_JNI "Build the java library using SWIG" OFF)
+set(CALCDA_JNI_DIR ${CMAKE_OUTPUT_DIR} PROPERTY STRING "Output directory for the JNI files")
+
+set(SWIG_MODULE_NAME "Calcda")
 
 set(CALCDA_SRC_DIR src)
 set(CALCDA_INCLUDE_DIR include)
 set(CALCDA_TEST_DIR test)
+set(CALCDA_INTERFACE_FILE interface/Calcda.i)
 set(CALCDA_CATCH_FILE ${CALCDA_TEST_DIR}/catch.hpp)
 set(
 	CALCDA_HEADER_FILES
@@ -20,9 +25,8 @@ set(
 	${CALCDA_INCLUDE_DIR}/Rotation.hpp
 	${CALCDA_INCLUDE_DIR}/Geometry.hpp
 )
-
-add_library(
-	calcda
+set(
+	CALCDA_SOURCE_FILES
 	${CALCDA_SRC_DIR}/Geometry.cpp
 	${CALCDA_SRC_DIR}/Integer.cpp
 	${CALCDA_SRC_DIR}/Matrix3.cpp
@@ -31,6 +35,11 @@ add_library(
 	${CALCDA_SRC_DIR}/Vector2.cpp
 	${CALCDA_SRC_DIR}/Vector3.cpp
 	${CALCDA_SRC_DIR}/Vector4.cpp
+)
+
+add_library(
+	calcda
+	${CALCDA_SOURCE_FILES}
 	${CALCDA_HEADER_FILES}
 )
 
@@ -74,3 +83,22 @@ set_target_properties(
 )
 
 target_compile_features(calcda PRIVATE cxx_std_17)
+
+if(${CALCDA_JNI})
+	cmake_policy(SET CMP0086 NEW) # UseSWIG module name
+	cmake_policy(SET CMP0078 NEW) # UseSWIG target names
+
+	find_package(SWIG COMPONENTS java REQUIRED)
+
+	include(UseSWIG)
+	
+	set_property(SOURCE ${CALCDA_INTERFACE_FILE} PROPERTY CPLUSPLUS ON)
+	swig_add_library(
+		calcda_jni
+		TYPE MODULE
+		LANGUAGE java
+		SOURCES ${CALCDA_INTERFACE_FILE}
+			${CALCDA_HEADER_FILES}
+			${CALCDA_SOURCE_FILES}
+	)
+endif()
