@@ -1,3 +1,5 @@
+// clang-format off
+
 %module Calcda
 %{
 	#include "../include/Intrinsic.hpp"
