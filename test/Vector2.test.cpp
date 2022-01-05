@@ -1,30 +1,14 @@
 #include "Vector2.hpp"
 #include "catch.hpp"
+#include "random.hpp"
 #include "string.hpp"
-#include <random>
-
-std::vector<float> generateRandomFloats(unsigned count, float min, float max) {
-    std::random_device dev;
-    std::mt19937 gen(dev());
-
-    std::uniform_real_distribution<float> distribution(min, max);
-
-    std::vector<float> result(count, 0.0f);
-    for (unsigned i = 0; i < count; ++i)
-        result[i] = distribution(gen);
-
-    return result;
-}
-
-#define CALCDA_RANDOM_BLOCK(varname, count, code)                              \
-    {                                                                          \
-        const auto varname = generateRandomFloats(count, 1.0f, 20.0f);         \
-        { code }                                                               \
-    }
+#include <cmath>
 
 using Calcda::Vector2;
 
 TEST_CASE("Vector2 operations", "Vector2") {
+    CALCDA_DEFINE_RANDOM(x)
+
     SECTION("default initialization to 0") {
         auto vec = Vector2();
 
@@ -32,86 +16,114 @@ TEST_CASE("Vector2 operations", "Vector2") {
         REQUIRE(vec.y == 0.0f);
     }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 2, SECTION("construction") {
-            auto vec = Vector2(x[0], x[1]);
-            REQUIRE(vec.x == x[0]);
-            REQUIRE(vec.y == x[1]);
-        })
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("construction") {
+        const auto vec = Vector2(x[0], x[1]);
+        REQUIRE(vec.x == x[0]);
+        REQUIRE(vec.y == x[1]);
+    }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 2, SECTION("comparison") {
-            REQUIRE(Vector2(x[0], x[1]) == Vector2(x[0], x[1]));
-        })
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("initializer list construction") {
+        const Vector2 vec = {x[0], x[1]};
+        REQUIRE(vec.x == x[0]);
+        REQUIRE(vec.y == x[1]);
+    }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 1, SECTION("scalar construction") {
-            REQUIRE(Vector2::scalar(x[0]) == Vector2(x[0], x[0]));
-        })
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("swaps") {
+        REQUIRE(Vector2(x[0], x[1]).yx() == Vector2(x[1], x[0]));
+    }
 
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("comparison") {
+        REQUIRE(Vector2(x[0], x[1]) == Vector2(x[0], x[1]));
+    }
+
+    CALCDA_REQUIRE_RANDOM(x, 1)
+    SECTION("scalar construction") {
+        REQUIRE(Vector2::scalar(x[0]) == Vector2(x[0], x[0]));
+    }
+
+    CALCDA_REQUIRE_RANDOM(x, 2)
     SECTION("length calculation") {
-        REQUIRE(Vector2(3.0f, 4.0f).length() == 5.0f);
+        REQUIRE(Vector2(x[0], x[1]).length() ==
+                std::sqrt(x[0] * x[0] + x[1] * x[1]));
     }
 
+    CALCDA_REQUIRE_RANDOM(x, 2)
     SECTION("lengthSquared calculation") {
-        REQUIRE(Vector2(3.0f, 4.0f).lengthSquared() == 25.0f);
+        REQUIRE(Vector2(x[0], x[1]).lengthSquared() ==
+                (x[0] * x[0] + x[1] * x[1]));
     }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 4, SECTION("addition") {
-            REQUIRE(Vector2(x[0], x[1]) + Vector2(x[2], x[3]) ==
-                    Vector2(x[0] + x[2], x[1] + x[3]));
-        })
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("normalization") {
+        const auto v1 = Vector2(x[0], x[1]);
+        const auto len = v1.length();
 
-    CALCDA_RANDOM_BLOCK(
-        x, 4, SECTION("subtraction") {
-            REQUIRE(Vector2(x[0], x[1]) - Vector2(x[2], x[3]) ==
-                    Vector2(x[0] - x[2], x[1] - x[3]));
-        })
+        const auto normalized = v1.normalize();
+        const auto manually_normalized = Vector2(x[0] / len, x[1] / len);
+        REQUIRE(normalized.x == Approx(manually_normalized.x));
+        REQUIRE(normalized.y == Approx(manually_normalized.y));
+    }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 4, SECTION("multiplication") {
-            REQUIRE(Vector2(x[0], x[1]) * Vector2(x[2], x[3]) ==
-                    Vector2(x[0] * x[2], x[1] * x[3]));
-        })
+    CALCDA_REQUIRE_RANDOM(x, 4)
+    SECTION("addition") {
+        REQUIRE(Vector2(x[0], x[1]) + Vector2(x[2], x[3]) ==
+                Vector2(x[0] + x[2], x[1] + x[3]));
+    }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 4, SECTION("division") {
-            REQUIRE(Vector2(x[0], x[1]) / Vector2(x[2], x[3]) ==
-                    Vector2(x[0] / x[2], x[1] / x[3]));
-        })
+    CALCDA_REQUIRE_RANDOM(x, 4)
+    SECTION("subtraction") {
+        REQUIRE(Vector2(x[0], x[1]) - Vector2(x[2], x[3]) ==
+                Vector2(x[0] - x[2], x[1] - x[3]));
+    }
 
-    /* TODO */
-    /* CALCDA_RANDOM_BLOCK(
-        x, 2, SECTION("tuple access") {
-            const auto [a, b] = Vector2(x[0], x[1]);
-            REQUIRE(a == x[0]);
-            REQUIRE(b == x[1]);
-        }) */
+    CALCDA_REQUIRE_RANDOM(x, 4)
+    SECTION("multiplication") {
+        REQUIRE(Vector2(x[0], x[1]) * Vector2(x[2], x[3]) ==
+                Vector2(x[0] * x[2], x[1] * x[3]));
+    }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 2, SECTION("unary minus operator") {
-            const auto negative = -Vector2(x[0], x[1]);
-            REQUIRE(negative.x == -x[0]);
-            REQUIRE(negative.y == -x[1]);
-        })
+    CALCDA_REQUIRE_RANDOM(x, 4)
+    SECTION("division") {
+        REQUIRE(Vector2(x[0], x[1]) / Vector2(x[2], x[3]) ==
+                Vector2(x[0] / x[2], x[1] / x[3]));
+    }
 
-    CALCDA_RANDOM_BLOCK(
-        x, 2, SECTION("assignment operator") {
-            Vector2 vec = Vector2(0.0f, 0.0f);
-            vec = Vector2(x[0], x[1]);
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("tuple access") {
+        const auto [a, b] = Vector2(x[0], x[1]);
+        REQUIRE(a == x[0]);
+        REQUIRE(b == x[1]);
+    }
 
-            REQUIRE(vec.x == x[0]);
-            REQUIRE(vec.y == x[1]);
-        })
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("unary minus operator") {
+        const auto negative = -Vector2(x[0], x[1]);
+        REQUIRE(negative.x == -x[0]);
+        REQUIRE(negative.y == -x[1]);
+    }
 
+    CALCDA_REQUIRE_RANDOM(x, 2)
+    SECTION("assignment operator") {
+        Vector2 vec = Vector2(0.0f, 0.0f);
+        vec = Vector2(x[0], x[1]);
+
+        REQUIRE(vec.x == x[0]);
+        REQUIRE(vec.y == x[1]);
+    }
+
+    CALCDA_REQUIRE_RANDOM_SORTED(x, 10)
     SECTION("clamp") {
-        const auto vecUnder = Vector2(0.0f, 0.0f);
-        const auto vecMiddle = Vector2(5.0f, 5.0f);
-        const auto vecOver = Vector2(10.0f, 10.0f);
+        const auto vecUnder = Vector2(x[0], x[1]);
+        const auto lowerBound = Vector2(x[2], x[3]);
 
-        const auto upperBound = Vector2(6.0f, 5.0f);
-        const auto lowerBound = Vector2(5.0f, 4.0f);
+        const auto vecMiddle = Vector2(x[4], x[5]);
+
+        const auto upperBound = Vector2(x[6], x[7]);
+        const auto vecOver = Vector2(x[8], x[9]);
 
         REQUIRE(Vector2::clamp(vecUnder, lowerBound, upperBound) == lowerBound);
         REQUIRE(Vector2::clamp(vecMiddle, lowerBound, upperBound) == vecMiddle);
@@ -123,19 +135,29 @@ TEST_CASE("Vector2 operations", "Vector2") {
                 Vector2(0.0f, 0.0f));
     }
 
-    SECTION("dot") { /* TODO */
+    CALCDA_REQUIRE_RANDOM(x, 4)
+    SECTION("dot") {
+        REQUIRE(Vector2::dot({x[0], x[1]}, {x[2], x[3]}) ==
+                (x[0] * x[2] + x[1] * x[3]));
     }
 
-    SECTION("reflect") { /*TODO*/
+    CALCDA_REQUIRE_RANDOM_SORTED(x, 4)
+    SECTION("vmin/vmax") {
+        const Vector2 v1 = {x[0], x[1]};
+        const Vector2 v2 = {x[2], x[3]};
+
+        REQUIRE(Vector2::vmin(v1, v2) == v1);
+        REQUIRE(Vector2::vmax(v1, v2) == v2);
     }
 
-    SECTION("vmin") {
-        REQUIRE(Vector2::vmin({0.0f, 1.0f}, {-1.0f, 2.0f}) ==
-                Vector2(-1.0f, 1.0f));
-    }
+    CALCDA_REQUIRE_RANDOM(x, 4)
+    SECTION("reflect") {
+        const Vector2 v1 = {x[0], x[1]};
+        const Vector2 v2 = Vector2(x[2], x[3]).normalize();
 
-    SECTION("vmax") {
-        REQUIRE(Vector2::vmax({0.0f, 1.0f}, {-1.0f, 2.0f}) ==
-                Vector2(-1.0f, 1.0f));
+        const auto dot = Vector2::dot(v1, v2);
+
+        REQUIRE(Vector2::reflect(v1, v2) ==
+                Vector2(v1.x - 2.0f * dot * v2.x, v1.y - 2.0f * dot * v2.y));
     }
 }

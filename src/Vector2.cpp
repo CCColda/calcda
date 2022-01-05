@@ -238,48 +238,48 @@ float CALCDA Vector2::length() const { return std::sqrt(x * x + y * y); }
 float CALCDA Vector2::lengthSquared() const { return x * x + y * y; }
 
 // https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2.cs
-Vector2 CALCDA Vector2::reflect(const Vector2 &Value, const Vector2 &Surface) {
-    float dotProduct = Value.x * Surface.x + Value.y * Surface.y;
+Vector2 CALCDA Vector2::reflect(const Vector2 &value, const Vector2 &surface) {
+    float dotProduct = value.x * surface.x + value.y * surface.y;
 
-    return Vector2(Value.x - 2.0f * dotProduct * Surface.x,
-                   Value.y - 2.0f * dotProduct * Surface.y);
+    return Vector2(value.x - 2.0f * dotProduct * surface.x,
+                   value.y - 2.0f * dotProduct * surface.y);
 }
 
-Vector2 CALCDA Vector2::clamp(const Vector2 &Value, const Vector2 &min,
+Vector2 CALCDA Vector2::clamp(const Vector2 &value, const Vector2 &min,
                               const Vector2 &max) {
-    float X = Value.x;
+    float X = value.x;
     X = (X > max.x) ? max.x : X;
     X = (X < min.x) ? min.x : X;
 
-    float Y = Value.y;
+    float Y = value.y;
     Y = (Y > max.y) ? max.y : Y;
     Y = (Y < min.y) ? min.y : Y;
 
     return Vector2(X, Y);
 }
 
-Vector2 CALCDA Vector2::lerp(const Vector2 &Value1, const Vector2 &Value2,
+Vector2 CALCDA Vector2::lerp(const Vector2 &value1, const Vector2 &value2,
                              float Amount) {
-    return Vector2(Value1.x + (Value2.x - Value1.x) * Amount,
-                   Value1.y + (Value2.y - Value1.y) * Amount);
+    return Vector2(value1.x + (value2.x - value1.x) * Amount,
+                   value1.y + (value2.y - value1.y) * Amount);
 }
 
 // https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2_Intrinsics.cs
-float CALCDA Vector2::dot(const Vector2 &Value1, const Vector2 &Value2) {
-    return (Value1.x * Value2.x + Value1.y * Value2.y);
+float CALCDA Vector2::dot(const Vector2 &value1, const Vector2 &value2) {
+    return (value1.x * value2.x + value1.y * value2.y);
 }
 
-Vector2 CALCDA Vector2::vmin(const Vector2 &Value1, const Vector2 &Value2) {
-    return Vector2((Value1.x < Value2.x) ? Value1.x : Value2.x,
-                   (Value1.y < Value2.y) ? Value1.y : Value2.y);
+Vector2 CALCDA Vector2::vmin(const Vector2 &value1, const Vector2 &value2) {
+    return Vector2((value1.x < value2.x) ? value1.x : value2.x,
+                   (value1.y < value2.y) ? value1.y : value2.y);
 }
 
-Vector2 CALCDA Vector2::vmax(const Vector2 &Value1, const Vector2 &Value2) {
-    return Vector2((Value1.x < Value2.x) ? Value1.x : Value2.x,
-                   (Value1.y < Value2.y) ? Value1.y : Value2.y);
+Vector2 CALCDA Vector2::vmax(const Vector2 &value1, const Vector2 &value2) {
+    return Vector2((value1.x > value2.x) ? value1.x : value2.x,
+                   (value1.y > value2.y) ? value1.y : value2.y);
 }
 
-Vector2 CALCDA Vector2::scalar(float Value) { return Vector2(Value, Value); }
+Vector2 CALCDA Vector2::scalar(float value) { return Vector2(value, value); }
 
 std::string CALCDA Vector2::toString() const {
     std::stringstream Stream;
