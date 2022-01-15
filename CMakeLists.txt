@@ -4,9 +4,13 @@ project(calcda VERSION 1.0.0)
 # toggle testing to be off by default
 option(CALCDA_TEST "Build the test executable using Catch2" OFF)
 option(CALCDA_JNI "Build the java library using SWIG" OFF)
-set(CALCDA_JNI_DIR ${CMAKE_OUTPUT_DIR} PROPERTY STRING "Output directory for the JNI files")
+option(CALCDA_JNI_SOURCE_ONLY "Build the java library using SWIG" OFF)
+set(CALCDA_JNI_PACKAGE_NAME "org.colda.calcda" CACHE STRING "JNI package name")
+set(CALCDA_JNI_JAVA_DIR ${PROJECT_BINARY_DIR}/jni CACHE PATH "Output directory for the JNI files")
+set(CALCDA_JNI_CPP_DIR ${PROJECT_BINARY_DIR}/cpp CACHE PATH "Output directory for the JNI cxx file")
+file(RELATIVE_PATH CALCDA_RELATIVE_JNI ${PROJECT_BINARY_DIR} ${CALCDA_JNI_CPP_DIR})
 
-set(SWIG_MODULE_NAME "Calcda")
+set(CMAKE_SWIG_FLAGS -package ${CALCDA_JNI_PACKAGE_NAME})
 
 set(CALCDA_SRC_DIR src)
 set(CALCDA_INCLUDE_DIR include)
@@ -70,6 +74,12 @@ if (${CALCDA_TEST})
 		LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 	)
+
+	if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+		include(CTest)
+	endif()
+	enable_testing()
+	add_test(NAME calcda_test COMMAND tests)
 endif()
 
 set(CMAKE_CXX_STANDARD 17)
@@ -84,11 +94,24 @@ set_target_properties(
 
 target_compile_features(calcda PRIVATE cxx_std_17)
 
+
+if(${CALCDA_JNI_SOURCE_ONLY})
+	find_package(SWIG REQUIRED)
+
+	file(MAKE_DIRECTORY ${CALCDA_JNI_JAVA_DIR})
+	file(MAKE_DIRECTORY ${CALCDA_JNI_CPP_DIR})
+	add_custom_command(
+		TARGET ${PROJECT_NAME}
+		COMMAND ${SWIG_EXECUTABLE} -java -package ${CALCDA_JNI_PACKAGE_NAME} -outdir ${CALCDA_JNI_JAVA_DIR} -o ${CALCDA_RELATIVE_JNI}/calcda.cxx -c++ ${PROJECT_SOURCE_DIR}/${CALCDA_INTERFACE_FILE}
+	)
+endif()
+
 if(${CALCDA_JNI})
 	cmake_policy(SET CMP0086 NEW) # UseSWIG module name
 	cmake_policy(SET CMP0078 NEW) # UseSWIG target names
 
-	find_package(SWIG COMPONENTS java REQUIRED)
+	find_package(SWIG REQUIRED)
+	find_package(JNI)
 
 	include(UseSWIG)
 	
@@ -97,8 +120,15 @@ if(${CALCDA_JNI})
 		calcda_jni
 		TYPE MODULE
 		LANGUAGE java
+		OUTPUT_DIR ${CALCDA_JNI_JAVA_DIR}
+		OUTFILE_DIR ${CALCDA_JNI_OUTFILE_DIR}
 		SOURCES ${CALCDA_INTERFACE_FILE}
 			${CALCDA_HEADER_FILES}
 			${CALCDA_SOURCE_FILES}
 	)
+
+	if(JNI_FOUND)
+		target_include_directories(calcda_jni PRIVATE ${JNI_INCLUDE_DIRS})
+		target_link_libraries(calcda_jni calcda ${JNI_LIBRARIES})
+	endif()
 endif()
