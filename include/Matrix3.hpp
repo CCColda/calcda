@@ -13,7 +13,7 @@
 
 namespace Calcda {
 //! @brief Class for handling 3x3 matrices
-class CALCDA Matrix3 {
+class Matrix3 {
   public:
     //! @brief Containing union type
     union container_t {

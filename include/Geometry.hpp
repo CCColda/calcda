@@ -9,7 +9,7 @@
 namespace Calcda {
 enum class LineType { LINE, RAY, SEGMENT };
 
-class CALCDA Shape {
+class Shape {
   protected:
     //! @brief Top left corner of the bounding rectangle
     Vector2 m_xymin;
@@ -33,7 +33,7 @@ class CALCDA Shape {
                   LineType type = LineType::LINE) const = 0;
 };
 
-class CALCDA Line : public Shape {
+class Line : public Shape {
   private:
     Vector2 m_begin;
     Vector2 m_end;
@@ -54,7 +54,7 @@ class CALCDA Line : public Shape {
                                                Vector2 l2b, LineType l2t);
 };
 
-class CALCDA Circle : public Shape {
+class Circle : public Shape {
   protected:
     Vector2 m_origin;
     float m_radius;
@@ -69,7 +69,7 @@ class CALCDA Circle : public Shape {
                   LineType type = LineType::LINE) const final;
 };
 
-class CALCDA Polygon : public Shape {
+class Polygon : public Shape {
   protected:
     std::vector<Vector2> m_points;
 

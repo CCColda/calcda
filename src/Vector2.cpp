@@ -18,36 +18,36 @@ Vector2::Vector2(const Vector2 &Other) : x(Other.x), y(Other.y) {}
 Vector2::Vector2(float X, float Y) : x(X), y(Y) {}
 
 Vector2::~Vector2() {}
-Vector2 CALCDA Vector2::xy() const { return Vector2(x, y); }
+Vector2 Vector2::xy() const { return Vector2(x, y); }
 
-Vector2 CALCDA Vector2::yx() const { return Vector2(y, x); }
+Vector2 Vector2::yx() const { return Vector2(y, x); }
 
-float *CALCDA Vector2::getData() { return &x; }
+float *Vector2::getData() { return &x; }
 
 const float *Vector2::getData() const { return &x; }
 
-Vector2 &CALCDA Vector2::selfAdd(const Vector2 &Other) {
+Vector2 &Vector2::selfAdd(const Vector2 &Other) {
     x += Other.x;
     y += Other.y;
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfSubtract(const Vector2 &Other) {
+Vector2 &Vector2::selfSubtract(const Vector2 &Other) {
     x -= Other.x;
     y -= Other.y;
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfMultiply(const Vector2 &Other) {
+Vector2 &Vector2::selfMultiply(const Vector2 &Other) {
     x *= Other.x;
     y *= Other.y;
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfDivide(float Amount) {
+Vector2 &Vector2::selfDivide(float Amount) {
     float reciprocal = 1.0f / Amount;
 
     x *= reciprocal;
@@ -56,14 +56,14 @@ Vector2 &CALCDA Vector2::selfDivide(float Amount) {
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfDivide(const Vector2 &Other) {
+Vector2 &Vector2::selfDivide(const Vector2 &Other) {
     x /= Other.x;
     y /= Other.y;
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfNormalize() {
+Vector2 &Vector2::selfNormalize() {
     float lengthReciprocal = 1.0f / std::abs(std::sqrt(x * x + y * y));
 
     x *= lengthReciprocal;
@@ -72,28 +72,28 @@ Vector2 &CALCDA Vector2::selfNormalize() {
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfAbsolute() {
+Vector2 &Vector2::selfAbsolute() {
     x = std::abs(x);
     y = std::abs(y);
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfSqrt() {
+Vector2 &Vector2::selfSqrt() {
     x = std::sqrt(x);
     y = std::sqrt(y);
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::selfNegate() {
+Vector2 &Vector2::selfNegate() {
     x = -x;
     y = -y;
 
     return *this;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA Vector2::add(const Vector2 &Other) const {
+/* [[nodiscard]] */ Vector2 Vector2::add(const Vector2 &Other) const {
     Vector2 result;
 
     result.x = x + Other.x;
@@ -102,8 +102,7 @@ Vector2 &CALCDA Vector2::selfNegate() {
     return result;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA
-Vector2::subtract(const Vector2 &Other) const {
+/* [[nodiscard]] */ Vector2 Vector2::subtract(const Vector2 &Other) const {
     Vector2 result;
 
     result.x = x - Other.x;
@@ -112,8 +111,7 @@ Vector2::subtract(const Vector2 &Other) const {
     return result;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA
-Vector2::multiply(const Vector2 &Other) const {
+/* [[nodiscard]] */ Vector2 Vector2::multiply(const Vector2 &Other) const {
     Vector2 result;
 
     result.x = x * Other.x;
@@ -122,7 +120,7 @@ Vector2::multiply(const Vector2 &Other) const {
     return result;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA Vector2::divide(float Amount) const {
+/* [[nodiscard]] */ Vector2 Vector2::divide(float Amount) const {
     Vector2 result;
 
     float Reciprocal = 1.0f / Amount;
@@ -133,7 +131,7 @@ Vector2::multiply(const Vector2 &Other) const {
     return result;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA Vector2::divide(const Vector2 &Other) const {
+/* [[nodiscard]] */ Vector2 Vector2::divide(const Vector2 &Other) const {
     Vector2 result;
 
     result.x = x / Other.x;
@@ -142,7 +140,7 @@ Vector2::multiply(const Vector2 &Other) const {
     return result;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA Vector2::normalize() const {
+/* [[nodiscard]] */ Vector2 Vector2::normalize() const {
     Vector2 result;
 
     float LengthReciprocal = 1.0f / std::abs(std::sqrt(x * x + y * y));
@@ -153,65 +151,55 @@ Vector2::multiply(const Vector2 &Other) const {
     return result;
 }
 
-/* [[nodiscard]] */ Vector2 CALCDA Vector2::negate() const {
-    return Vector2(-x, -y);
-}
+/* [[nodiscard]] */ Vector2 Vector2::negate() const { return Vector2(-x, -y); }
 
-Vector2 CALCDA Vector2::operator+(const Vector2 &Other) const {
-    return add(Other);
-}
+Vector2 Vector2::operator+(const Vector2 &Other) const { return add(Other); }
 
-Vector2 CALCDA Vector2::operator-(const Vector2 &Other) const {
+Vector2 Vector2::operator-(const Vector2 &Other) const {
     return subtract(Other);
 }
 
-Vector2 CALCDA Vector2::operator*(const Vector2 &Other) const {
+Vector2 Vector2::operator*(const Vector2 &Other) const {
     return multiply(Other);
 }
 
-Vector2 CALCDA Vector2::operator/(const Vector2 &Other) const {
-    return divide(Other);
-}
+Vector2 Vector2::operator/(const Vector2 &Other) const { return divide(Other); }
 
-Vector2 CALCDA Vector2::operator/(float Amount) const { return divide(Amount); }
+Vector2 Vector2::operator/(float Amount) const { return divide(Amount); }
 
-Vector2 CALCDA Vector2::operator-() const { return negate(); }
+Vector2 Vector2::operator-() const { return negate(); }
 
-Vector2 &CALCDA Vector2::operator=(const Vector2 &Other) {
+Vector2 &Vector2::operator=(const Vector2 &Other) {
     x = Other.x;
     y = Other.y;
 
     return *this;
 }
 
-Vector2 &CALCDA Vector2::operator+=(const Vector2 &Other) {
-    return selfAdd(Other);
-}
+Vector2 &Vector2::operator+=(const Vector2 &Other) { return selfAdd(Other); }
 
-Vector2 &CALCDA Vector2::operator-=(const Vector2 &Other) {
+Vector2 &Vector2::operator-=(const Vector2 &Other) {
     return selfSubtract(Other);
 }
 
-Vector2 &CALCDA Vector2::operator*=(const Vector2 &Other) {
+Vector2 &Vector2::operator*=(const Vector2 &Other) {
     return selfMultiply(Other);
 }
 
-Vector2 &CALCDA Vector2::operator/=(const Vector2 &Other) {
-    return selfDivide(Other);
-}
+Vector2 &Vector2::operator/=(const Vector2 &Other) { return selfDivide(Other); }
 
-Vector2 &CALCDA Vector2::operator/=(float Amount) { return selfDivide(Amount); }
+Vector2 &Vector2::operator/=(float Amount) { return selfDivide(Amount); }
 
-bool CALCDA Vector2::operator==(const Vector2 &Other) const {
+bool Vector2::operator==(const Vector2 &Other) const {
     return (x == Other.x && y == Other.y);
 }
 
-bool CALCDA Vector2::operator!=(const Vector2 &Other) const {
+bool Vector2::operator!=(const Vector2 &Other) const {
     return (x != Other.x || y != Other.y);
 }
 
 // https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2_Intrinsics.cs
-Vector2 CALCDA Vector2::absolute() const {
+Vector2 Vector2::absolute() const {
     Vector2 result;
 
     result.x = std::abs(x);
@@ -220,7 +208,7 @@ Vector2 CALCDA Vector2::absolute() const {
     return result;
 }
 
-Vector2 CALCDA Vector2::sqrt() const {
+Vector2 Vector2::sqrt() const {
     Vector2 result;
 
     result.x = std::sqrt(x);
@@ -229,24 +217,24 @@ Vector2 CALCDA Vector2::sqrt() const {
     return result;
 }
 
-float CALCDA Vector2::distance(const Vector2 &Other) const {
+float Vector2::distance(const Vector2 &Other) const {
     return subtract(Other).length();
 }
 
-float CALCDA Vector2::length() const { return std::sqrt(x * x + y * y); }
+float Vector2::length() const { return std::sqrt(x * x + y * y); }
 
-float CALCDA Vector2::lengthSquared() const { return x * x + y * y; }
+float Vector2::lengthSquared() const { return x * x + y * y; }
 
 // https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2.cs
-Vector2 CALCDA Vector2::reflect(const Vector2 &value, const Vector2 &surface) {
+Vector2 Vector2::reflect(const Vector2 &value, const Vector2 &surface) {
     float dotProduct = value.x * surface.x + value.y * surface.y;
 
     return Vector2(value.x - 2.0f * dotProduct * surface.x,
                    value.y - 2.0f * dotProduct * surface.y);
 }
 
-Vector2 CALCDA Vector2::clamp(const Vector2 &value, const Vector2 &min,
-                              const Vector2 &max) {
+Vector2 Vector2::clamp(const Vector2 &value, const Vector2 &min,
+                       const Vector2 &max) {
     float X = value.x;
     X = (X > max.x) ? max.x : X;
     X = (X < min.x) ? min.x : X;
@@ -258,30 +246,30 @@ Vector2 CALCDA Vector2::clamp(const Vector2 &value, const Vector2 &min,
     return Vector2(X, Y);
 }
 
-Vector2 CALCDA Vector2::lerp(const Vector2 &value1, const Vector2 &value2,
-                             float Amount) {
+Vector2 Vector2::lerp(const Vector2 &value1, const Vector2 &value2,
+                      float Amount) {
     return Vector2(value1.x + (value2.x - value1.x) * Amount,
                    value1.y + (value2.y - value1.y) * Amount);
 }
 
 // https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector2_Intrinsics.cs
-float CALCDA Vector2::dot(const Vector2 &value1, const Vector2 &value2) {
+float Vector2::dot(const Vector2 &value1, const Vector2 &value2) {
     return (value1.x * value2.x + value1.y * value2.y);
 }
 
-Vector2 CALCDA Vector2::vmin(const Vector2 &value1, const Vector2 &value2) {
+Vector2 Vector2::vmin(const Vector2 &value1, const Vector2 &value2) {
     return Vector2((value1.x < value2.x) ? value1.x : value2.x,
                    (value1.y < value2.y) ? value1.y : value2.y);
 }
 
-Vector2 CALCDA Vector2::vmax(const Vector2 &value1, const Vector2 &value2) {
+Vector2 Vector2::vmax(const Vector2 &value1, const Vector2 &value2) {
     return Vector2((value1.x > value2.x) ? value1.x : value2.x,
                    (value1.y > value2.y) ? value1.y : value2.y);
 }
 
-Vector2 CALCDA Vector2::scalar(float value) { return Vector2(value, value); }
+Vector2 Vector2::scalar(float value) { return Vector2(value, value); }
 
-std::string CALCDA Vector2::toString() const {
+std::string Vector2::toString() const {
     std::stringstream Stream;
 
     Stream << std::fixed << std::setprecision(2) << "<" << x << ", " << y

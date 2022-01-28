@@ -4,8 +4,6 @@
 #include <cstddef>
 #include <stdarg.h>
 
-#define CALCDA
-
 #ifndef CALCDA_NO_IF_CONSTEXPR
 #define CALCDA_IF_CONSTEXPR if constexpr
 #else
@@ -14,11 +12,11 @@
 
 namespace Calcda {
 namespace Internal {
-inline CALCDA std::size_t hash_combine(std::size_t left, std::size_t right) {
+inline std::size_t hash_combine(std::size_t left, std::size_t right) {
     return left ^ (right + 0x9e3779b9 + (left << 6) + (left >> 2));
 }
 
-inline CALCDA std::size_t hash_combine_n(unsigned n, ...) {
+inline std::size_t hash_combine_n(unsigned n, ...) {
     va_list list;
     va_start(list, n);
 
@@ -34,7 +32,7 @@ inline CALCDA std::size_t hash_combine_n(unsigned n, ...) {
 
 #ifdef CALCDA_FUNC_PARAMETER_PACK
 
-template <typename... T> inline CALCDA std::size_t hash_combine(T... hashes) {
+template <typename... T> inline std::size_t hash_combine(T... hashes) {
     std::size_t result = 0;
 
     const auto fn = [&result](std::size_t value) {
@@ -49,7 +47,7 @@ template <typename... T> inline CALCDA std::size_t hash_combine(T... hashes) {
 
 #else
 
-template <typename... T> inline CALCDA std::size_t hash_combine(T... hashes) {
+template <typename... T> inline std::size_t hash_combine(T... hashes) {
     return hash_combine_n(sizeof...(hashes), hashes...);
 }
 #endif

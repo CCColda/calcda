@@ -14,7 +14,7 @@
 
 namespace Calcda {
 //! @brief Class for handling 4x4 matrices
-class CALCDA Matrix4 {
+class Matrix4 {
   public:
     //! @brief Containing union type
     union container_t {

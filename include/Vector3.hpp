@@ -16,7 +16,7 @@ namespace Calcda {
  * @see [Reference:
  * Vector3](https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector3.cs)
  */
-class CALCDA Vector3 {
+class Vector3 {
   public:
     float x;
     float y;
@@ -227,13 +227,13 @@ using Point3 = Vector3;
 
 namespace std {
 template <>
-struct CALCDA tuple_size<Calcda::Vector3> : integral_constant<size_t, 3> {};
+struct tuple_size<Calcda::Vector3> : integral_constant<size_t, 3> {};
 
-template <size_t I> struct CALCDA tuple_element<I, Calcda::Vector3> {
+template <size_t I> struct tuple_element<I, Calcda::Vector3> {
     using type = float;
 };
 
-template <> struct CALCDA hash<Calcda::Vector3> {
+template <> struct hash<Calcda::Vector3> {
     size_t operator()(const Calcda::Vector3 &v) const noexcept {
         return Calcda::Internal::hash_combine(
             hash<float>()(v.x), hash<float>()(v.y), hash<float>()(v.z));

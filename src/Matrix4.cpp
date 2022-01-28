@@ -6,13 +6,13 @@
 
 namespace Calcda {
 
-CALCDA Matrix4::Matrix4() {
+Matrix4::Matrix4() {
     for (std::size_t index = 0; index < 16; ++index) {
         value.data[index] = 0.0f;
     }
 }
 
-CALCDA Matrix4::Matrix4(const std::initializer_list<float> &List) {
+Matrix4::Matrix4(const std::initializer_list<float> &List) {
     std::size_t count = 0;
     std::size_t rowCount = 0;
     std::size_t colCount = 0;
@@ -47,13 +47,13 @@ CALCDA Matrix4::Matrix4(const std::initializer_list<float> &List) {
     }
 }
 
-CALCDA Matrix4::Matrix4(const Matrix4 &Other) {
+Matrix4::Matrix4(const Matrix4 &Other) {
     for (std::size_t index = 0; index < 16; ++index) {
         value.data[index] = Other.value.data[index];
     }
 }
 
-CALCDA Matrix4::Matrix4(const Matrix3 &Base) {
+Matrix4::Matrix4(const Matrix3 &Base) {
     for (std::size_t row = 0; row < 3; ++row) {
         for (std::size_t column = 0; column < 3; ++column) {
             value.matrix[row][column] = Base.value.matrix[row][column];
@@ -66,44 +66,44 @@ CALCDA Matrix4::Matrix4(const Matrix3 &Base) {
     value.matrix[3][3] = 1.0f;
 }
 
-CALCDA Matrix4::~Matrix4() {}
+Matrix4::~Matrix4() {}
 
-Vector4 CALCDA Matrix4::r01() const {
+Vector4 Matrix4::r01() const {
     return Vector4(value.matrix[0][0], value.matrix[0][1], value.matrix[0][2],
                    value.matrix[0][3]);
 }
 
-Vector4 CALCDA Matrix4::r02() const {
+Vector4 Matrix4::r02() const {
     return Vector4(value.matrix[1][0], value.matrix[1][1], value.matrix[1][2],
                    value.matrix[1][3]);
 }
 
-Vector4 CALCDA Matrix4::r03() const {
+Vector4 Matrix4::r03() const {
     return Vector4(value.matrix[2][0], value.matrix[2][1], value.matrix[2][2],
                    value.matrix[2][3]);
 }
 
-Vector4 CALCDA Matrix4::r04() const {
+Vector4 Matrix4::r04() const {
     return Vector4(value.matrix[3][0], value.matrix[3][1], value.matrix[3][2],
                    value.matrix[3][3]);
 }
 
-Vector4 CALCDA Matrix4::c01() const {
+Vector4 Matrix4::c01() const {
     return Vector4(value.matrix[0][0], value.matrix[1][0], value.matrix[2][0],
                    value.matrix[3][0]);
 }
 
-Vector4 CALCDA Matrix4::c02() const {
+Vector4 Matrix4::c02() const {
     return Vector4(value.matrix[0][1], value.matrix[1][1], value.matrix[2][1],
                    value.matrix[3][1]);
 }
 
-Vector4 CALCDA Matrix4::c03() const {
+Vector4 Matrix4::c03() const {
     return Vector4(value.matrix[0][2], value.matrix[1][2], value.matrix[2][2],
                    value.matrix[3][2]);
 }
 
-Vector4 CALCDA Matrix4::c04() const {
+Vector4 Matrix4::c04() const {
     return Vector4(value.matrix[0][3], value.matrix[1][3], value.matrix[2][3],
                    value.matrix[3][3]);
 }
@@ -112,7 +112,7 @@ float *Matrix4::getData() { return &value.data[0]; }
 
 const float *Matrix4::getData() const { return &value.data[0]; }
 
-Matrix4 &CALCDA Matrix4::selfMultiply(const Matrix4 &Other) {
+Matrix4 &Matrix4::selfMultiply(const Matrix4 &Other) {
     for (unsigned int i = 0U; i < 4U; i++) {
         for (unsigned int j = 0U; j < 4U; j++) {
             for (unsigned int k = 0U; k < 4U; k++) {
@@ -124,7 +124,7 @@ Matrix4 &CALCDA Matrix4::selfMultiply(const Matrix4 &Other) {
     return *this;
 }
 
-Matrix4 &CALCDA Matrix4::selfDivide(const Matrix4 &Other) {
+Matrix4 &Matrix4::selfDivide(const Matrix4 &Other) {
     Matrix4 temporal = Other.calculateInverseTemporal();
     double determinant = Other.calculateDeterminant(&temporal);
 
@@ -135,7 +135,7 @@ Matrix4 &CALCDA Matrix4::selfDivide(const Matrix4 &Other) {
     }
 }
 
-Matrix4 CALCDA Matrix4::calculateInverseTemporal() const {
+Matrix4 Matrix4::calculateInverseTemporal() const {
     Matrix4 result;
 
     result.value.data[0] = (value.data[5] * value.data[10] * value.data[15] -
@@ -253,7 +253,7 @@ Matrix4 CALCDA Matrix4::calculateInverseTemporal() const {
     return result;
 }
 
-double CALCDA Matrix4::calculateDeterminant(Matrix4 *iTemporal) const {
+double Matrix4::calculateDeterminant(Matrix4 *iTemporal) const {
     Matrix4 temporal;
     if (iTemporal == nullptr) {
         temporal = calculateInverseTemporal();
@@ -267,8 +267,7 @@ double CALCDA Matrix4::calculateDeterminant(Matrix4 *iTemporal) const {
            value.data[3] * temporal.value.data[1];
 }
 
-Matrix4 CALCDA Matrix4::inverse(Matrix4 *iTemporal,
-                                double *iDeterminant) const {
+Matrix4 Matrix4::inverse(Matrix4 *iTemporal, double *iDeterminant) const {
     Matrix4 result;
 
     Matrix4 temporal;
@@ -300,7 +299,7 @@ Matrix4 CALCDA Matrix4::inverse(Matrix4 *iTemporal,
     }
 }
 
-Matrix4 CALCDA Matrix4::divide(const Matrix4 &Other) const {
+Matrix4 Matrix4::divide(const Matrix4 &Other) const {
     Matrix4 Temporal = Other.calculateInverseTemporal();
     double Determinant = Other.calculateDeterminant(&Temporal);
 
@@ -311,7 +310,7 @@ Matrix4 CALCDA Matrix4::divide(const Matrix4 &Other) const {
     }
 }
 
-Vector4 CALCDA Matrix4::multiply(const Vector4 &Other) const {
+Vector4 Matrix4::multiply(const Vector4 &Other) const {
     const float X = (value.m00 * Other.x) + (value.m01 * Other.y) +
                     (value.m02 * Other.z) + (value.m03 * Other.w);
     const float Y = (value.m10 * Other.x) + (value.m11 * Other.y) +
@@ -324,7 +323,7 @@ Vector4 CALCDA Matrix4::multiply(const Vector4 &Other) const {
     return Vector4(X, Y, Z, W);
 }
 
-Matrix4 CALCDA Matrix4::multiply(const Matrix4 &Other) const {
+Matrix4 Matrix4::multiply(const Matrix4 &Other) const {
     Matrix4 result;
 
     for (unsigned int i = 0U; i < 4U; i++) {
@@ -338,46 +337,40 @@ Matrix4 CALCDA Matrix4::multiply(const Matrix4 &Other) const {
     return result;
 }
 
-Matrix4 CALCDA Matrix4::transpose() const {
+Matrix4 Matrix4::transpose() const {
     return Matrix4{value.m00, value.m10, value.m20, value.m30,
                    value.m01, value.m11, value.m21, value.m31,
                    value.m02, value.m12, value.m22, value.m32,
                    value.m03, value.m13, value.m23, value.m33};
 }
 
-Matrix4 CALCDA Matrix4::negate() const {
+Matrix4 Matrix4::negate() const {
     return Matrix4{-value.m00, -value.m01, -value.m02, -value.m03,
                    -value.m10, -value.m11, -value.m12, -value.m13,
                    -value.m20, -value.m21, -value.m22, -value.m23,
                    -value.m30, -value.m31, -value.m32, -value.m33};
 }
 
-Matrix4 CALCDA Matrix4::operator-() const { return negate(); }
+Matrix4 Matrix4::operator-() const { return negate(); }
 
-Matrix4 CALCDA Matrix4::operator/(const Matrix4 &x) const { return divide(x); }
+Matrix4 Matrix4::operator/(const Matrix4 &x) const { return divide(x); }
 
-Matrix4 CALCDA Matrix4::operator*(const Matrix4 &x) const {
-    return multiply(x);
-}
+Matrix4 Matrix4::operator*(const Matrix4 &x) const { return multiply(x); }
 
-Vector4 CALCDA Matrix4::operator*(const Vector4 &x) const {
-    return multiply(x);
-}
+Vector4 Matrix4::operator*(const Vector4 &x) const { return multiply(x); }
 
-Matrix4 &CALCDA Matrix4::operator/=(const Matrix4 &x) { return selfDivide(x); }
+Matrix4 &Matrix4::operator/=(const Matrix4 &x) { return selfDivide(x); }
 
-Matrix4 &CALCDA Matrix4::operator*=(const Matrix4 &x) {
-    return selfMultiply(x);
-}
+Matrix4 &Matrix4::operator*=(const Matrix4 &x) { return selfMultiply(x); }
 
-Matrix4 &CALCDA Matrix4::operator=(const Matrix4 &Other) {
+Matrix4 &Matrix4::operator=(const Matrix4 &Other) {
     for (unsigned int Iterator = 0; Iterator < 16; ++Iterator) {
         value.data[Iterator] = Other.value.data[Iterator];
     }
     return *this;
 }
 
-bool CALCDA Matrix4::operator==(const Matrix4 &Other) const {
+bool Matrix4::operator==(const Matrix4 &Other) const {
     return (value.m00 == Other.value.m00 && value.m01 == Other.value.m01 &&
             value.m02 == Other.value.m02 && value.m03 == Other.value.m03 &&
             value.m10 == Other.value.m10 && value.m11 == Other.value.m11 &&
@@ -388,7 +381,7 @@ bool CALCDA Matrix4::operator==(const Matrix4 &Other) const {
             value.m32 == Other.value.m32 && value.m33 == Other.value.m33);
 }
 
-bool CALCDA Matrix4::operator!=(const Matrix4 &Other) const {
+bool Matrix4::operator!=(const Matrix4 &Other) const {
     return (value.m00 != Other.value.m00 || value.m01 != Other.value.m01 ||
             value.m02 != Other.value.m02 || value.m03 != Other.value.m03 ||
             value.m10 != Other.value.m10 || value.m11 != Other.value.m11 ||
@@ -399,7 +392,7 @@ bool CALCDA Matrix4::operator!=(const Matrix4 &Other) const {
             value.m32 != Other.value.m32 || value.m33 != Other.value.m33);
 }
 
-Matrix4 CALCDA Matrix4::rotation(Axis x, double value) {
+Matrix4 Matrix4::rotation(Axis x, double value) {
     switch (x) {
         case Axis::X:
             return Matrix4{1.0f,
@@ -459,7 +452,7 @@ Matrix4 CALCDA Matrix4::rotation(Axis x, double value) {
     }
 }
 
-Matrix4 CALCDA Matrix4::translation(float X, float Y, float Z) {
+Matrix4 Matrix4::translation(float X, float Y, float Z) {
     Matrix4 result = Matrix4::Identity;
 
     result.value.m03 = X;
@@ -469,7 +462,7 @@ Matrix4 CALCDA Matrix4::translation(float X, float Y, float Z) {
     return result;
 }
 
-Matrix4 CALCDA Matrix4::translation(Vector3 Point) {
+Matrix4 Matrix4::translation(Vector3 Point) {
     Matrix4 result = Matrix4::Identity;
 
     result.value.m03 = Point.x;
@@ -479,7 +472,7 @@ Matrix4 CALCDA Matrix4::translation(Vector3 Point) {
     return result;
 }
 
-Matrix4 CALCDA Matrix4::scale(float X, float Y, float Z) {
+Matrix4 Matrix4::scale(float X, float Y, float Z) {
     Matrix4 result = Matrix4::Identity;
 
     result.value.m00 = X;
@@ -489,7 +482,7 @@ Matrix4 CALCDA Matrix4::scale(float X, float Y, float Z) {
     return result;
 }
 
-Matrix4 CALCDA Matrix4::scale(Vector3 Point) {
+Matrix4 Matrix4::scale(Vector3 Point) {
     Matrix4 result = Matrix4::Identity;
 
     result.value.m00 = Point.x;
@@ -499,9 +492,8 @@ Matrix4 CALCDA Matrix4::scale(Vector3 Point) {
     return result;
 }
 
-Matrix4 CALCDA Matrix4::orthographic(float left, float right, float top,
-                                     float bottom, float nearplane,
-                                     float farplane) {
+Matrix4 Matrix4::orthographic(float left, float right, float top, float bottom,
+                              float nearplane, float farplane) {
 
     return Matrix4{2.0f / (right - left),
                    0.0f,
@@ -523,7 +515,7 @@ Matrix4 CALCDA Matrix4::orthographic(float left, float right, float top,
 
 // https://www.opengl.org/discussion_boards/showthread.php/172280-Constructing-an-orthographic-matrix-for-2D-drawing
 
-Matrix4 CALCDA Matrix4::lookAt(Vector3 Eye, Vector3 Center, Vector3 Up) {
+Matrix4 Matrix4::lookAt(Vector3 Eye, Vector3 Center, Vector3 Up) {
     const Vector3 forward = (Center - Eye).normalize();
     const Vector3 side = Vector3::cross(forward, Up).normalize();
     const Vector3 top = Vector3::cross(side, forward);
@@ -534,8 +526,8 @@ Matrix4 CALCDA Matrix4::lookAt(Vector3 Eye, Vector3 Center, Vector3 Up) {
            Matrix4::translation(-Eye);
 }
 
-Matrix4 CALCDA Matrix4::frustum(float left, float right, float top,
-                                float bottom, float nearPlane, float farPlane) {
+Matrix4 Matrix4::frustum(float left, float right, float top, float bottom,
+                         float nearPlane, float farPlane) {
     /* ~[glhFrustumf2] : https://www.khronos.org/opengl/wiki/GluPerspective_code
      */
 
@@ -563,8 +555,8 @@ Matrix4 CALCDA Matrix4::frustum(float left, float right, float top,
     return result;
 }
 
-Matrix4 CALCDA Matrix4::perspective(float fovyInRadians, float aspectRatio,
-                                    float nearPlane, float farPlane) {
+Matrix4 Matrix4::perspective(float fovyInRadians, float aspectRatio,
+                             float nearPlane, float farPlane) {
     float ymax = nearPlane * tanf(fovyInRadians);
     float ymin = -ymax;
     float xmin = -ymax * aspectRatio;
@@ -573,9 +565,8 @@ Matrix4 CALCDA Matrix4::perspective(float fovyInRadians, float aspectRatio,
     return frustum(xmin, xmax, ymin, ymax, nearPlane, farPlane);
 }
 
-Matrix4 CALCDA Matrix4::perspectiveFlippedY(float fovyInRadians,
-                                            float aspectRatio, float nearPlane,
-                                            float farPlane) {
+Matrix4 Matrix4::perspectiveFlippedY(float fovyInRadians, float aspectRatio,
+                                     float nearPlane, float farPlane) {
     float ymax = nearPlane * tanf(fovyInRadians);
     float ymin = -ymax;
     float xmin = -ymax * aspectRatio;
@@ -584,9 +575,8 @@ Matrix4 CALCDA Matrix4::perspectiveFlippedY(float fovyInRadians,
     return frustum(xmin, xmax, ymax, ymin, nearPlane, farPlane);
 }
 
-Matrix4 CALCDA Matrix4::projection(float left, float right, float top,
-                                   float bottom, float nearPlane,
-                                   float farPlane) {
+Matrix4 Matrix4::projection(float left, float right, float top, float bottom,
+                            float nearPlane, float farPlane) {
     return Matrix4{(2 * nearPlane) / (right - left),
                    0.0,
                    (right + left) / (right - left),
@@ -605,7 +595,7 @@ Matrix4 CALCDA Matrix4::projection(float left, float right, float top,
                    0.0};
 }
 
-std::string CALCDA Matrix4::toString() const {
+std::string Matrix4::toString() const {
     std::stringstream stream;
     stream << std::fixed << std::setprecision(2) << "[";
 
@@ -632,8 +622,8 @@ std::string CALCDA Matrix4::toString() const {
     return stream.str();
 }
 
-std::string CALCDA Matrix4::toStringO(unsigned int Padding,
-                                      unsigned int Precision) const {
+std::string Matrix4::toStringO(unsigned int Padding,
+                               unsigned int Precision) const {
     const std::string paddingString = std::string(Padding, ' ');
 
     std::stringstream stream;

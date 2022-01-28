@@ -7,20 +7,20 @@
 
 namespace Calcda {
 
-/** @protected */ CALCDA Shape::Shape(Vector2 xymin, Vector2 xymax)
+/** @protected */ Shape::Shape(Vector2 xymin, Vector2 xymax)
     : m_xymin(xymin), m_xymax(xymax) {}
 
-std::tuple<Vector2, Vector2> CALCDA Shape::getBoundingRectangle() const {
+std::tuple<Vector2, Vector2> Shape::getBoundingRectangle() const {
     return {m_xymin, m_xymax};
 }
 
-bool CALCDA Shape::isPointInsideBoundingRectangle(Vector2 point) const {
+bool Shape::isPointInsideBoundingRectangle(Vector2 point) const {
     return m_xymin.x <= point.x && point.x <= m_xymax.x &&
            m_xymin.y <= point.y && point.y <= m_xymax.y;
 }
 
-bool CALCDA Shape::doesLineIntersectBoundingRectangle(Vector2 a, Vector2 b,
-                                                      LineType type) const {
+bool Shape::doesLineIntersectBoundingRectangle(Vector2 a, Vector2 b,
+                                               LineType type) const {
     if (isPointInsideBoundingRectangle(a) || isPointInsideBoundingRectangle(b))
         return true;
 
@@ -42,7 +42,7 @@ bool CALCDA Shape::doesLineIntersectBoundingRectangle(Vector2 a, Vector2 b,
 
 #pragma region Line
 
-CALCDA Line::Line(Vector2 begin, Vector2 end, LineType type)
+Line::Line(Vector2 begin, Vector2 end, LineType type)
     : Shape(), m_begin(begin), m_end(end), m_type(type) {
     if (begin.lengthSquared() <= end.lengthSquared()) {
         m_xymin = begin;
@@ -53,7 +53,7 @@ CALCDA Line::Line(Vector2 begin, Vector2 end, LineType type)
     }
 }
 
-/* virtual */ bool CALCDA Line::isPointInside(Vector2 point) const /* final */
+/* virtual */ bool Line::isPointInside(Vector2 point) const /* final */
 {
     if (!isPointInsideBoundingRectangle(point))
         return false;
@@ -68,7 +68,7 @@ CALCDA Line::Line(Vector2 begin, Vector2 end, LineType type)
     return (slope * (point.x - m_begin.x) + m_begin.y) == point.y;
 }
 
-/* virtual */ std::vector<Vector2> CALCDA
+/* virtual */ std::vector<Vector2>
 Line::intersectLine(Vector2 a, Vector2 b, LineType type) const /* final */
 {
     const auto intersectResult =
@@ -99,9 +99,10 @@ constexpr static const IntersectionCheckTableEntry IntersectionCheckTable[] = {
     std::make_pair(std::make_pair(LineType::RAY, LineType::LINE),
                    [](float s, float t) { return 0.0f >= s; })};
 
-/* static */ std::optional<Vector2>
-    CALCDA Line::intersectRaw(Vector2 l1a, Vector2 l1b, LineType l1t,
-                              Vector2 l2a, Vector2 l2b, LineType l2t) {
+/* static */ std::optional<Vector2> Line::intersectRaw(Vector2 l1a, Vector2 l1b,
+                                                       LineType l1t,
+                                                       Vector2 l2a, Vector2 l2b,
+                                                       LineType l2t) {
     /*
     l1(t) = l1a + t * (l1b - l1a)
     l2(t) = l2a + t * (l2b - l2a)
@@ -147,11 +148,11 @@ constexpr static const IntersectionCheckTableEntry IntersectionCheckTable[] = {
 
 #pragma region Circle
 
-CALCDA Circle::Circle(Vector2 origin, float radius)
+Circle::Circle(Vector2 origin, float radius)
     : Shape(origin - Vector2::scalar(radius), origin + Vector2::scalar(radius)),
       m_origin(origin), m_radius(radius) {}
 
-/* virtual */ bool CALCDA Circle::isPointInside(Vector2 point) const /* final */
+/* virtual */ bool Circle::isPointInside(Vector2 point) const /* final */
 {
     return (m_origin - point).absolute().lengthSquared() <
            (m_radius * m_radius);
@@ -180,8 +181,8 @@ CALCDA Circle::Circle(Vector2 origin, float radius)
         q(x)=a*x^2 + b*x + c
  * \f]
  */
-std::vector<Vector2> CALCDA Circle::intersectLine(Vector2 a, Vector2 b,
-                                                  LineType type) const {
+std::vector<Vector2> Circle::intersectLine(Vector2 a, Vector2 b,
+                                           LineType type) const {
     const auto aInside = isPointInside(a);
     const auto bInside = isPointInside(b);
 
@@ -235,7 +236,7 @@ std::vector<Vector2> CALCDA Circle::intersectLine(Vector2 a, Vector2 b,
 
 #pragma region Polygon
 
-/* private */ void CALCDA Polygon::calculateMinmax() {
+/* private */ void Polygon::calculateMinmax() {
     auto [xmin, xmax] = std::minmax_element(
         m_points.begin(), m_points.end(),
         [](const Vector2 &a, const Vector2 &b) -> bool { return a.x < b.x; });
@@ -248,25 +249,24 @@ std::vector<Vector2> CALCDA Circle::intersectLine(Vector2 a, Vector2 b,
     m_xymax = {xmax->x, ymax->y};
 }
 
-CALCDA Polygon::Polygon(const std::vector<Vector2> &points)
+Polygon::Polygon(const std::vector<Vector2> &points)
     : Shape(), m_points(points) {
     calculateMinmax();
 }
 
-CALCDA Polygon::Polygon(std::initializer_list<Vector2> list)
+Polygon::Polygon(std::initializer_list<Vector2> list)
     : Shape(), m_points(list.begin(), list.end()) {
     calculateMinmax();
 }
 
-/* virtual */ bool CALCDA
-Polygon::isPointInside(Vector2 point) const /* override */
+/* virtual */ bool Polygon::isPointInside(Vector2 point) const /* override */
 {
     return (intersectLine(point, {point.x + 1.0f, point.y}, LineType::RAY)
                 .size() %
             2) == 1;
 }
 
-/* virtual */ std::vector<Vector2> CALCDA
+/* virtual */ std::vector<Vector2>
 Polygon::intersectLine(Vector2 a, Vector2 b, LineType type) const /* override */
 {
     if (m_points.size() <= 1)

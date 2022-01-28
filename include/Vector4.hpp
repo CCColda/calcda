@@ -17,7 +17,7 @@ namespace Calcda {
  * @see [Reference:
  * Vector4](https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Vector4.cs)
  */
-class CALCDA Vector4 {
+class Vector4 {
   public:
     float x;
     float y;
@@ -230,13 +230,13 @@ using Point4 = Vector4;
 
 namespace std {
 template <>
-struct CALCDA tuple_size<Calcda::Vector4> : integral_constant<size_t, 4> {};
+struct tuple_size<Calcda::Vector4> : integral_constant<size_t, 4> {};
 
-template <size_t I> struct CALCDA tuple_element<I, Calcda::Vector4> {
+template <size_t I> struct tuple_element<I, Calcda::Vector4> {
     using type = float;
 };
 
-template <> struct CALCDA hash<Calcda::Vector4> {
+template <> struct hash<Calcda::Vector4> {
     size_t operator()(const Calcda::Vector4 &v) const noexcept {
         return Calcda::Internal::hash_combine(
             hash<float>()(v.x), hash<float>()(v.y), hash<float>()(v.z),

@@ -4,7 +4,7 @@
 namespace Calcda {
 
 namespace Integer {
-std::size_t CALCDA countDigits(std::int64_t Signed, std::size_t Radix) {
+std::size_t countDigits(std::int64_t Signed, std::size_t Radix) {
     std::int64_t value = Signed;
     std::size_t result = 0;
 

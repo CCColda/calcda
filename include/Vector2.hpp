@@ -199,13 +199,13 @@ using Point2 = Vector2;
 
 namespace std {
 template <>
-struct CALCDA tuple_size<Calcda::Vector2> : integral_constant<size_t, 2> {};
+struct tuple_size<Calcda::Vector2> : integral_constant<size_t, 2> {};
 
-template <size_t I> struct CALCDA tuple_element<I, Calcda::Vector2> {
+template <size_t I> struct tuple_element<I, Calcda::Vector2> {
     using type = float;
 };
 
-template <> struct CALCDA hash<Calcda::Vector2> {
+template <> struct hash<Calcda::Vector2> {
     size_t operator()(const Calcda::Vector2 &v) const noexcept {
         return Calcda::Internal::hash_combine(hash<float>()(v.x),
                                               hash<float>()(v.y));

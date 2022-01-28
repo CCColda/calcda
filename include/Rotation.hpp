@@ -16,8 +16,8 @@ namespace Calcda {
 enum class Axis { X, Y, Z };
 
 namespace Conversion {
-float CALCDA degreeToRadian(float Degree);
-float CALCDA radianToDegree(float Radian);
+float degreeToRadian(float Degree);
+float radianToDegree(float Radian);
 } // namespace Conversion
 } // namespace Calcda
 
