@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(calcda VERSION 1.0.0)
+project(calcda
+	VERSION      1.0.0
+	DESCRIPTION  "Calcda - Math and geometry classes written in C++"
+	HOMEPAGE_URL "https://github.com/CCColda/calcda#readme"
+	LANGUAGES    "CXX"
+)
 
 # toggle testing to be off by default
 option(CALCDA_TEST "Build the test executable using Catch2" OFF)
@@ -16,7 +21,6 @@ set(CALCDA_SRC_DIR src)
 set(CALCDA_INCLUDE_DIR include)
 set(CALCDA_TEST_DIR test)
 set(CALCDA_INTERFACE_FILE interface/Calcda.i)
-set(CALCDA_CATCH_FILE ${CALCDA_TEST_DIR}/catch.hpp)
 set(
 	CALCDA_HEADER_FILES
 	${CALCDA_INCLUDE_DIR}/Calcda.hpp
@@ -47,6 +51,10 @@ add_library(
 	${CALCDA_HEADER_FILES}
 )
 
+add_library(
+	colda::calcda ALIAS calcda
+)
+
 target_include_directories(
 	calcda
 	PUBLIC
@@ -54,32 +62,40 @@ target_include_directories(
 )
 
 if (${CALCDA_TEST})
+	Include(FetchContent)
+
+	FetchContent_Declare(
+		Catch2
+		GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+		GIT_TAG        v3.0.1
+	)
+
+	FetchContent_MakeAvailable(Catch2)	
+
 	add_executable(
-		tests
-		${CALCDA_TEST_DIR}/test.cpp
+		calcda_test
 		${CALCDA_TEST_DIR}/Vector2.test.cpp
 		${CALCDA_TEST_DIR}/Geometry.test.cpp
-		${CALCDA_TEST_DIR}/string.hpp
-		${CALCDA_HEADER_FILES}
-		${CALCDA_CATCH_FILE}
+		${CALCDA_TEST_DIR}/string.cpp
 	)
-	target_include_directories(tests PRIVATE ${CALCDA_INCLUDE_DIR})
-	target_include_directories(tests PRIVATE ${CALCDA_TEST_DIR})
-	target_link_libraries(tests calcda)
-	target_compile_features(tests PRIVATE cxx_std_17)
+
+	target_include_directories(calcda_test PRIVATE ${CALCDA_INCLUDE_DIR})
+	target_include_directories(calcda_test PRIVATE ${CALCDA_TEST_DIR})
+	target_link_libraries(calcda_test colda::calcda Catch2::Catch2WithMain)
+	target_compile_features(calcda_test PRIVATE cxx_std_17)
 	set_target_properties(
-		tests
+		calcda_test
 		PROPERTIES
 		ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 		LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
 		RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 	)
 
-	if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-		include(CTest)
-	endif()
-	enable_testing()
-	add_test(NAME calcda_test COMMAND tests)
+	list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+	include(CTest)
+	include(Catch)
+
+	catch_discover_tests(calcda_test)
 endif()
 
 set(CMAKE_CXX_STANDARD 17)

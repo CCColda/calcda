@@ -1,10 +1,10 @@
+#include <catch2/catch_all.hpp>
 #include "Geometry.hpp"
-#include "catch.hpp"
-#include "string.hpp"
-
-using namespace Calcda;
 
 TEST_CASE("Polygon intersections", "Polygon") {
+    using namespace Calcda;
+    using Calcda::Polygon;
+
     Polygon square = Polygon{Vector2(0.0f, 0.0f), Vector2(0.0f, 1.0f),
                              Vector2(1.0f, 1.0f), Vector2(1.0f, 0.0f)};
 

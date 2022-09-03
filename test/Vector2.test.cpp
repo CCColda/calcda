@@ -1,12 +1,14 @@
-#include "Vector2.hpp"
-#include "catch.hpp"
-#include "random.hpp"
-#include "string.hpp"
+#include <catch2/catch_all.hpp>
 #include <cmath>
+
+#include "Vector2.hpp"
+#include "random.hpp"
 
 using Calcda::Vector2;
 
 TEST_CASE("Vector2 operations", "Vector2") {
+    using Catch::Approx;
+    
     CALCDA_DEFINE_RANDOM(x)
 
     SECTION("default initialization to 0") {

@@ -1,8 +1,5 @@
-#ifndef CALCDA_TEST_STRING_H
-#define CALCDA_TEST_STRING_H
-
+#include <catch2/catch_all.hpp>
 #include "Calcda.hpp"
-#include "catch.hpp"
 
 #define DEFINE_STRING_MAKER_FOR(target_class)                                  \
     template <> struct StringMaker<target_class> {                             \
@@ -18,5 +15,3 @@ DEFINE_STRING_MAKER_FOR(Calcda::Vector4)
 DEFINE_STRING_MAKER_FOR(Calcda::Matrix3)
 DEFINE_STRING_MAKER_FOR(Calcda::Matrix4)
 } // namespace Catch
-
-#endif // !defined(CALCDA_TEST_STRING_H)
