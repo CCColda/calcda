@@ -42,6 +42,8 @@ class Line : public Shape {
   public:
     Line(Vector2 begin, Vector2 end, LineType type);
 
+    std::tuple<Vector2, Vector2> getPoints() const;
+
     virtual std::vector<Vector2>
     intersectLine(Vector2 a, Vector2 b,
                   LineType type = LineType::LINE) const final;
@@ -63,6 +65,9 @@ class Circle : public Shape {
     Circle(Vector2 origin, float radius = 1.0f);
     virtual ~Circle() = default;
 
+    Vector2 getOrigin() const;
+    float getRadius() const;
+
     virtual bool isPointInside(Vector2 point) const final;
     virtual std::vector<Vector2>
     intersectLine(Vector2 a, Vector2 b,
@@ -80,6 +85,8 @@ class Polygon : public Shape {
     Polygon(const std::vector<Vector2> &points);
     Polygon(std::initializer_list<Vector2> list);
     virtual ~Polygon() = default;
+
+    std::vector<Vector2> getPoints() const;
 
     virtual bool isPointInside(Vector2 point) const override;
     virtual std::vector<Vector2>

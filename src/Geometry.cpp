@@ -53,6 +53,10 @@ Line::Line(Vector2 begin, Vector2 end, LineType type)
     }
 }
 
+std::tuple<Vector2, Vector2> Line::getPoints() const {
+    return {m_begin, m_end};
+}
+
 /* virtual */ bool Line::isPointInside(Vector2 point) const /* final */
 {
     if (!isPointInsideBoundingRectangle(point))
@@ -151,6 +155,14 @@ constexpr static const IntersectionCheckTableEntry IntersectionCheckTable[] = {
 Circle::Circle(Vector2 origin, float radius)
     : Shape(origin - Vector2::scalar(radius), origin + Vector2::scalar(radius)),
       m_origin(origin), m_radius(radius) {}
+
+Vector2 Circle::getOrigin() const {
+    return m_origin;
+}
+
+float Circle::getRadius() const {
+    return m_radius;
+}
 
 /* virtual */ bool Circle::isPointInside(Vector2 point) const /* final */
 {
@@ -264,6 +276,10 @@ Polygon::Polygon(std::initializer_list<Vector2> list)
     return (intersectLine(point, {point.x + 1.0f, point.y}, LineType::RAY)
                 .size() %
             2) == 1;
+}
+
+std::vector<Vector2> Polygon::getPoints() const {
+    return m_points;
 }
 
 /* virtual */ std::vector<Vector2>
