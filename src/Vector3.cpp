@@ -12,18 +12,6 @@ const Vector3 Vector3::UnitX = Vector3(1.0f, 0.0f, 0.0f);
 const Vector3 Vector3::UnitY = Vector3(0.0f, 1.0f, 0.0f);
 const Vector3 Vector3::UnitZ = Vector3(0.0f, 0.0f, 1.0f);
 
-Vector3::Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
-
-Vector3::Vector3(const Vector3 &Other) : x(Other.x), y(Other.y), z(Other.z) {}
-
-Vector3::Vector3(float X, float Y, float Z) : x(X), y(Y), z(Z) {}
-
-Vector3::Vector3(Vector2 XY, float Z) : x(XY.x), y(XY.y), z(Z) {}
-
-Vector3::Vector3(float X, Vector2 YZ) : x(X), y(YZ.x), z(YZ.y) {}
-
-Vector3::~Vector3() {}
-
 Vector2 Vector3::xy() const { return Vector2(x, y); }
 
 Vector2 Vector3::yz() const { return Vector2(y, z); }

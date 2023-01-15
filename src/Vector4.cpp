@@ -14,21 +14,6 @@ const Vector4 Vector4::UnitY = Vector4(0.0f, 1.0f, 0.0f, 0.0f);
 const Vector4 Vector4::UnitZ = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
 const Vector4 Vector4::UnitW = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 
-Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
-
-Vector4::Vector4(const Vector4 &Other)
-    : x(Other.x), y(Other.y), z(Other.z), w(Other.w) {}
-
-Vector4::Vector4(float X, float Y, float Z, float W) : x(X), y(Y), z(Z), w(W) {}
-
-Vector4::Vector4(Vector2 XY, Vector2 ZW) : x(XY.x), y(XY.y), z(ZW.x), w(ZW.y) {}
-
-Vector4::Vector4(Vector3 XYZ, float W) : x(XYZ.x), y(XYZ.y), z(XYZ.z), w(W) {}
-
-Vector4::Vector4(float X, Vector3 YZW) : x(X), y(YZW.x), z(YZW.y), w(YZW.z) {}
-
-Vector4::~Vector4() {}
-
 Vector2 Vector4::xy() const { return Vector2(x, y); }
 
 Vector2 Vector4::yz() const { return Vector2(y, z); }

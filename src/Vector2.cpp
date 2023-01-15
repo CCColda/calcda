@@ -11,13 +11,6 @@ const Vector2 Vector2::One = Vector2(1.0f, 1.0f);
 const Vector2 Vector2::UnitX = Vector2(1.0f, 0.0f);
 const Vector2 Vector2::UnitY = Vector2(0.0f, 1.0f);
 
-Vector2::Vector2() : x(0.0f), y(0.0f) {}
-
-Vector2::Vector2(const Vector2 &Other) : x(Other.x), y(Other.y) {}
-
-Vector2::Vector2(float X, float Y) : x(X), y(Y) {}
-
-Vector2::~Vector2() {}
 Vector2 Vector2::xy() const { return Vector2(x, y); }
 
 Vector2 Vector2::yx() const { return Vector2(y, x); }

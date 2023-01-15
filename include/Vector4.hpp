@@ -44,13 +44,18 @@ class Vector4 {
     static const Vector4 UnitW;
 
   public:
-    Vector4();
-    Vector4(float X, float Y, float Z, float W);
-    Vector4(Vector2 XY, Vector2 ZW);
-    Vector4(Vector3 XYZ, float W);
-    Vector4(float X, Vector3 YZW);
-    Vector4(const Vector4 &Other);
-    ~Vector4();
+    constexpr Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
+    constexpr Vector4(float X, float Y, float Z, float W)
+        : x(X), y(Y), z(Z), w(W) {}
+    constexpr Vector4(Vector2 XY, Vector2 ZW)
+        : x(XY.x), y(XY.y), z(ZW.x), w(ZW.y) {}
+    constexpr Vector4(Vector3 XYZ, float W)
+        : x(XYZ.x), y(XYZ.y), z(XYZ.z), w(W) {}
+    constexpr Vector4(float X, Vector3 YZW)
+        : x(X), y(YZW.x), z(YZW.y), w(YZW.z) {}
+    constexpr Vector4(const Vector4 &Other)
+        : x(Other.x), y(Other.y), z(Other.z), w(Other.w) {}
+    ~Vector4() = default;
 
     //! @brief Returns the X and Y elements
     Vector2 xy() const;

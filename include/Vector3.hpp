@@ -41,12 +41,13 @@ class Vector3 {
     static const Vector3 UnitZ;
 
   public:
-    Vector3();
-    Vector3(float X, float Y, float Z);
-    Vector3(Vector2 XY, float Z);
-    Vector3(float X, Vector2 YZ);
-    Vector3(const Vector3 &Other);
-    ~Vector3();
+    constexpr Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
+    constexpr Vector3(float X, float Y, float Z) : x(X), y(Y), z(Z) {}
+    constexpr Vector3(Vector2 XY, float Z) : x(XY.x), y(XY.y), z(Z) {}
+    constexpr Vector3(float X, Vector2 YZ) : x(X), y(YZ.x), z(YZ.y) {}
+    constexpr Vector3(const Vector3 &Other)
+        : x(Other.x), y(Other.y), z(Other.z) {}
+    ~Vector3() = default;
 
     //! @brief Returns the X and Y elements
     Vector2 xy() const;

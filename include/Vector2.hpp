@@ -36,10 +36,10 @@ class Vector2 {
     static const Vector2 UnitY;
 
   public:
-    Vector2();
-    Vector2(const Vector2 &Other);
-    Vector2(float X, float Y);
-    ~Vector2();
+    constexpr Vector2() : x(0.0f), y(0.0f) {}
+    constexpr Vector2(const Vector2 &Other) : x(Other.x), y(Other.y) {}
+    constexpr Vector2(float X, float Y) : x(X), y(Y) {}
+    ~Vector2() = default;
 
     //! @brief Returns the same vector (convinience)
     Vector2 xy() const;
