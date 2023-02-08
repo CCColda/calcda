@@ -34,6 +34,8 @@ class Shape {
 };
 
 class Line : public Shape {
+    friend struct std::hash<Line>;
+
   private:
     Vector2 m_begin;
     Vector2 m_end;
@@ -57,6 +59,8 @@ class Line : public Shape {
 };
 
 class Circle : public Shape {
+    friend struct std::hash<Circle>;
+
   protected:
     Vector2 m_origin;
     float m_radius;
@@ -75,6 +79,20 @@ class Circle : public Shape {
 };
 
 class Polygon : public Shape {
+    friend struct std::hash<Polygon>;
+
+  public:
+    struct EdgeIntersection {
+        Vector2 intersection;
+        Line segment;
+
+        inline bool operator==(const EdgeIntersection &other) const {
+            //! @todo
+            return intersection == other.intersection &&
+                   segment.getPoints() == other.segment.getPoints();
+        }
+    };
+
   protected:
     std::vector<Vector2> m_points;
 
@@ -89,10 +107,53 @@ class Polygon : public Shape {
     std::vector<Vector2> getPoints() const;
 
     virtual bool isPointInside(Vector2 point) const override;
+
+    std::vector<EdgeIntersection>
+    intersectLineEx(Vector2 a, Vector2 b, LineType type = LineType::LINE) const;
+
     virtual std::vector<Vector2>
     intersectLine(Vector2 a, Vector2 b,
                   LineType type = LineType::LINE) const override;
 };
 } // namespace Calcda
+
+namespace std {
+template <> struct hash<Calcda::Line> {
+    size_t operator()(const Calcda::Line &v) const noexcept {
+        return Calcda::Internal::hash_combine(
+            hash<Calcda::Vector2>()(v.m_begin),
+            hash<Calcda::Vector2>()(v.m_end), static_cast<unsigned>(v.m_type));
+    }
+};
+template <> struct hash<Calcda::Circle> {
+    size_t operator()(const Calcda::Circle &v) const noexcept {
+        return Calcda::Internal::hash_combine(
+            hash<Calcda::Vector2>()(v.m_origin), hash<float>()(v.m_radius));
+    }
+};
+template <> struct hash<Calcda::Polygon::EdgeIntersection> {
+    size_t
+    operator()(const Calcda::Polygon::EdgeIntersection &v) const noexcept {
+        return Calcda::Internal::hash_combine(
+            hash<Calcda::Vector2>()(v.intersection),
+            hash<Calcda::Line>()(v.segment));
+    }
+};
+template <> struct hash<Calcda::Polygon> {
+    size_t operator()(const Calcda::Polygon &v) const noexcept {
+        if (v.m_points.empty())
+            return 0;
+
+        size_t result = hash<Calcda::Vector2>()(v.m_points.at(0));
+
+        for (std::size_t i = 1; i < v.m_points.size(); ++i) {
+            result = Calcda::Internal::hash_combine(
+                result, hash<Calcda::Vector2>()(v.m_points.at(i)));
+        }
+
+        return result;
+    }
+};
+} // namespace std
 
 #endif // !defined(CALCDA_GEOMETRY_H)

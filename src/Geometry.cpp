@@ -81,6 +81,10 @@ Line::intersectLine(Vector2 a, Vector2 b, LineType type) const /* final */
                                        : std::vector<Vector2>{};
 }
 
+std::vector<Vector2> Line::intersectLine(const Line &other) const {
+    return intersectLine(other.m_begin, other.m_end, other.m_type);
+}
+
 using IntersectionCheckFunction = bool (*)(float, float);
 using IntersectionCheckTableEntry =
     std::pair<std::pair<LineType, LineType>, IntersectionCheckFunction>;
@@ -156,13 +160,9 @@ Circle::Circle(Vector2 origin, float radius)
     : Shape(origin - Vector2::scalar(radius), origin + Vector2::scalar(radius)),
       m_origin(origin), m_radius(radius) {}
 
-Vector2 Circle::getOrigin() const {
-    return m_origin;
-}
+Vector2 Circle::getOrigin() const { return m_origin; }
 
-float Circle::getRadius() const {
-    return m_radius;
-}
+float Circle::getRadius() const { return m_radius; }
 
 /* virtual */ bool Circle::isPointInside(Vector2 point) const /* final */
 {
@@ -249,6 +249,11 @@ std::vector<Vector2> Circle::intersectLine(Vector2 a, Vector2 b,
 #pragma region Polygon
 
 /* private */ void Polygon::calculateMinmax() {
+    if (m_points.empty()) {
+        m_xymin = m_xymax = Calcda::Vector2::Zero;
+        return;
+    }
+
     auto [xmin, xmax] = std::minmax_element(
         m_points.begin(), m_points.end(),
         [](const Vector2 &a, const Vector2 &b) -> bool { return a.x < b.x; });
@@ -278,8 +283,31 @@ Polygon::Polygon(std::initializer_list<Vector2> list)
             2) == 1;
 }
 
-std::vector<Vector2> Polygon::getPoints() const {
-    return m_points;
+std::vector<Vector2> Polygon::getPoints() const { return m_points; }
+
+std::vector<Polygon::EdgeIntersection>
+Polygon::intersectLineEx(Vector2 a, Vector2 b, LineType type) const {
+    if (m_points.size() <= 1)
+        return {};
+
+    const auto inputLine = Line(a, b, type);
+
+    std::unordered_set<EdgeIntersection> result = {};
+
+    Vector2 x = m_points.at(m_points.size() - 1), y;
+    for (std::size_t i = 0; i < m_points.size(); ++i) {
+        y = m_points.at(i);
+
+        const auto segment = Line(x, y, LineType::SEGMENT);
+        const auto intersection = inputLine.intersectLine(segment);
+
+        if (intersection.size() > 0)
+            result.insert({intersection.at(0), segment});
+
+        x = y;
+    }
+
+    return std::vector<EdgeIntersection>(result.begin(), result.end());
 }
 
 /* virtual */ std::vector<Vector2>
