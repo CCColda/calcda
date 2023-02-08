@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <optional>
 #include <vector>
+#include <tuple>
 
 namespace Calcda {
 enum class LineType { LINE, RAY, SEGMENT };
