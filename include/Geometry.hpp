@@ -6,6 +6,7 @@
 #include <optional>
 #include <tuple>
 #include <vector>
+#include <tuple>
 
 namespace Calcda {
 enum class LineType { LINE, RAY, SEGMENT };
