@@ -4,6 +4,7 @@
 #include "Vector2.hpp"
 #include <initializer_list>
 #include <optional>
+#include <tuple>
 #include <vector>
 
 namespace Calcda {
@@ -101,6 +102,7 @@ class Polygon : public Shape {
 
   public:
     Polygon(const std::vector<Vector2> &points);
+    Polygon(const Polygon &other);
     Polygon(std::initializer_list<Vector2> list);
     virtual ~Polygon() = default;
 

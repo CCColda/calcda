@@ -271,6 +271,10 @@ Polygon::Polygon(const std::vector<Vector2> &points)
     calculateMinmax();
 }
 
+Polygon::Polygon(const Polygon &other) : Shape(), m_points(other.getPoints()) {
+    calculateMinmax();
+}
+
 Polygon::Polygon(std::initializer_list<Vector2> list)
     : Shape(), m_points(list.begin(), list.end()) {
     calculateMinmax();
